@@ -1,17 +1,17 @@
-package com.alpiq.kafka.metrics.config;
+package com.alpiq.kafka.metrics.service;
 
-import com.alpiq.kafka.metrics.dto.ConsumerConfigurationDTO;
+import com.alpiq.kafka.metrics.dto.KafkaConfiguration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class ConsumerConfiguration {
-    ConsumerConfigurationDTO consumerConfigurationDTO = new ConsumerConfigurationDTO();
+public class KafkaConfigurationService {
+    KafkaConfiguration kafkaConfiguration = new KafkaConfiguration();
     InputStream inputStream;
 
-    public ConsumerConfigurationDTO getConsumerConfiguration() throws IOException {
+    public KafkaConfiguration getKafkaConfiguration() throws IOException {
         try {
             Properties prop = new Properties();
             String propFileName = "config.properties";
@@ -27,15 +27,17 @@ public class ConsumerConfiguration {
             String bootstrapServers = prop.getProperty("bootstrapServers");
             String consumerGroupId = prop.getProperty("consumerGroupId");
             String consumerTopicName = prop.getProperty("consumerTopicName");
+            String producerTopicName = prop.getProperty("producerTopicName");
 
-            consumerConfigurationDTO.setBootstrapServers(bootstrapServers);
-            consumerConfigurationDTO.setGroupId(consumerGroupId);
-            consumerConfigurationDTO.setTopicName(consumerTopicName);
+            kafkaConfiguration.setBootstrapServers(bootstrapServers);
+            kafkaConfiguration.setConsumerGroupId(consumerGroupId);
+            kafkaConfiguration.setConsumerTopicName(consumerTopicName);
+            kafkaConfiguration.setProducerTopicName(producerTopicName);
         } catch (Exception e) {
-            System.out.println("ConsumerConfiguration exception: " + e);
+            System.out.println("KafkaConfiguration exception: " + e);
         } finally {
             inputStream.close();
         }
-        return consumerConfigurationDTO;
+        return kafkaConfiguration;
     }
 }
